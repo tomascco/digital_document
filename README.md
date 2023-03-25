@@ -46,6 +46,18 @@ The example above produces the following PDF:
 
 ![image](https://user-images.githubusercontent.com/36938811/227730272-f3fc415b-1b8e-45b1-9227-864236e8d897.png)
 
+This lib could also be used to build higher level abstractions to create PDF. As an example, the class
+`DigitalDocument::Simple` has the capability to represent documents with more ease and `DigitalDocument::Simple::ToPDF`
+could be used to convert it into an PDF:
+
+```ruby
+document = DigitalDocument::Simple.new
+document.pages << DigitalDocument::Simple::Page.new("1.0 0.0 0.0 RG\n0.5 0.75 1.0 rg\n97.72 220.84 400 400 re\nB")
+pdf = DigitalDocument::Simple::ToPDF.call(document)
+DigitalDocument::PDF::Save.to_file("test.pdf", pdf: pdf)
+```
+This code creates the same PDF file as above.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
