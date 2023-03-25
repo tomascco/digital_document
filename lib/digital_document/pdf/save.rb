@@ -14,9 +14,9 @@ module DigitalDocument
         pdf.objects[1..].each_with_index do |obj, index|
           xref_table.push(io.pos)
 
-          io << "#{index + 1} 0 obj\n"
-          io << serialize(obj)
-          io << "\n"
+          io.puts("#{index + 1} 0 obj")
+          io.puts(serialize(obj))
+          io.puts("endobj")
         end
 
         xref_pos = io.pos

@@ -13,7 +13,8 @@ class DigitalDocument::PDF
         DigitalDocument::PDF::Stream.new("1.0 0.0 0.0 RG\n0.5 0.75 1.0 rg\n97.72 220.84 400 400 re\nB"),
         true,
         false,
-        nil
+        nil,
+        "Hi from PDF"
       ])
       io = StringIO.new
 
@@ -22,8 +23,9 @@ class DigitalDocument::PDF
 
       # Assert
       io.rewind
+
       File.open("test/support/fixture.pdf", "rb") do |fixture|
-        assert(FileUtils.compare_stream(fixture, io))
+        assert(FileUtils.compare_stream(fixture, io), "PDF doesn't match the fixture")
       end
     end
   end

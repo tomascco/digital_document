@@ -19,6 +19,8 @@ module DigitalDocument
     end
 
     def finalize_document!
+      return if readonly?
+
       self.readonly = true
       objects.freeze
 
