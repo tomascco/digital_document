@@ -1,8 +1,6 @@
 # DigitalDocument
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/digital_document`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Low level gem for representing and creating PDFs with Ruby
 
 ## Installation
 
@@ -16,7 +14,34 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+This gem maps PDF Objects to Ruby data types and objects, allowing the generation
+of PDFs with ease, without dependencies and using only Ruby!
+
+| PDF        | Ruby                            |
+|------------|---------------------------------|
+| Boolean    | TrueClass, FalseClass           |
+| Numeric    | Float, Integer                  |
+| String     | String                          |
+| Name       | Symbol                          |
+| Array      | Array                           |
+| Dictionary | Hash                            |
+| Stream     | DigitalDocument::PDF::Stream    |
+| Reference  | DigitalDocument::PDF::Reference |
+
+
+A document can be created instantiating `DigitalDocument::PDF`, passing an `Array`
+to the constructor with objects to build the PDF, as in the example below:
+
+```ruby
+pdf = DigitalDocument::PDF.new([
+  {Type: :Catalog, Pages: DigitalDocument::PDF::Reference.new(2)},
+  {Type: :Pages, Kids: [DigitalDocument::PDF::Reference.new(3)], Count: 1},
+  {Type: :Page, MediaBox: [0, 0, 595.44, 841.68], Contents: DigitalDocument::PDF::Reference.new(4)},
+  DigitalDocument::PDF::Stream.new("1.0 0.0 0.0 RG\n0.5 0.75 1.0 rg\n97.72 220.84 400 400 re\nB"),
+])
+
+DigitalDocument::PDF::Save.to_file("demo.pdf", pdf: pdf)
+```
 
 ## Development
 
@@ -26,7 +51,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/digital_document. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/digital_document/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/tomascco/digital_document. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/tomascco/digital_document/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -34,4 +59,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the DigitalDocument project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/digital_document/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the DigitalDocument project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/tomascco/digital_document/blob/main/CODE_OF_CONDUCT.md).
