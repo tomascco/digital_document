@@ -43,6 +43,7 @@ pdf = DigitalDocument::PDF.new([
 DigitalDocument::PDF::Save.to_file("demo.pdf", pdf: pdf)
 ```
 The example above produces the following PDF:
+
 ![image](https://user-images.githubusercontent.com/36938811/227730272-f3fc415b-1b8e-45b1-9227-864236e8d897.png)
 
 ## Development
