@@ -12,7 +12,7 @@ module DigitalDocument
     private attr_reader :readonly
     private attr_writer :version, :objects, :trailer, :readonly
 
-    def initialize(objects, version = "1.7")
+    def initialize(objects = [], version = "1.7")
       self.readonly = false
       self.version = version
       self.objects = [ZERO_FILLER, *objects]
@@ -32,6 +32,10 @@ module DigitalDocument
 
     def readonly?
       readonly
+    end
+
+    def next_id
+      objects.size
     end
   end
 end
