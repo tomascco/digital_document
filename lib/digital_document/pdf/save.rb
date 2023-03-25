@@ -5,40 +5,44 @@ module DigitalDocument
     module Save
       extend self
 
-      def call(path, pdf:)
-        pdf.finalize_document! if !pdf.readonly?
+      def to_io(io, pdf:)
+        pdf.finalize_document!
 
-        file = File.open(path, "wb")
-
-        file.puts("%PDF-#{pdf.version}")
+        io.puts("%PDF-#{pdf.version}")
 
         xref_table = []
         pdf.objects[1..].each_with_index do |obj, index|
-          xref_table.push(file.pos)
+          xref_table.push(io.pos)
 
-          file << "#{index + 1} 0 obj\n"
-          file << serialize(obj)
-          file << "\n"
+          io << "#{index + 1} 0 obj\n"
+          io << serialize(obj)
+          io << "\n"
         end
 
-        xref_pos = file.pos
+        xref_pos = io.pos
 
-        file.puts("xref")
-        file.puts("0 #{pdf.objects.size}")
-        file.puts("0000000000 65535 f")
+        io.puts("xref")
+        io.puts("0 #{pdf.objects.size}")
+        io.puts("0000000000 65535 f")
         xref_table.each do |entry|
-          file.puts("#{format("%010d", entry)} 00000 n")
+          io.puts("#{format("%010d", entry)} 00000 n")
         end
 
-        file.puts("trailer")
-        file.puts(serialize(pdf.trailer))
+        io.puts("trailer")
+        io.puts(serialize(pdf.trailer))
 
-        file.puts("startxref")
-        file.puts(xref_pos)
+        io.puts("startxref")
+        io.puts(xref_pos)
 
-        file.puts("%%EOF")
+        io.puts("%%EOF")
 
-        file.close
+        io
+      end
+
+      def to_file(path, pdf:)
+        File.open(path, "wb") do |file|
+          to_io(file, pdf:)
+        end
       end
 
       private
