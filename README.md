@@ -20,6 +20,7 @@ of PDFs with ease, without dependencies and using only Ruby!
 | PDF        | Ruby                            |
 |------------|---------------------------------|
 | Boolean    | TrueClass, FalseClass           |
+| Null       | NilClass                        |
 | Numeric    | Float, Integer                  |
 | String     | String                          |
 | Name       | Symbol                          |
